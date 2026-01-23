@@ -3,7 +3,7 @@ import re
 import json
 from dotenv import load_dotenv
 from groq import Groq
-
+import base64
 load_dotenv()
 
 # Initialize Groq client
@@ -289,7 +289,7 @@ OR
 # -----------------------------
 # Testing
 # -----------------------------
-if __name__ == "__main__":
+'''if __name__ == "__main__":
     print("=" * 70)
     print("TESTING GROQ AI SERVICE WITH MARKDOWN CLEANING")
     print("=" * 70)
@@ -347,4 +347,166 @@ if __name__ == "__main__":
     
     print("\n" + "=" * 70)
     print("✅ ALL TESTS COMPLETED")
+    print("=" * 70)'''
+
+    # Add to backend/ai_service.py
+# FREE Image Analysis using Groq Vision (Same API key!)
+
+def encode_image(image_path):
+    """Convert image to base64"""
+    with open(image_path, "rb") as image_file:
+        return base64.b64encode(image_file.read()).decode('utf-8')
+
+def analyze_image(image_path, structured_grievance):
+    """
+    Analyze image using Groq Vision and check if it matches the grievance.
+    """
+    try:
+        if not os.path.exists(image_path):
+            return {
+                "success": False,
+                "error": "Image file not found"
+            }
+
+        # Encode image
+        base64_image = encode_image(image_path)
+
+        # Vision + grievance alignment prompt
+        response = client.chat.completions.create(
+            model="meta-llama/llama-4-scout-17b-16e-instruct",
+            messages=[
+                {
+                    "role": "user",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": f"""
+You are given:
+1) An image uploaded by a citizen
+2) A structured public grievance
+
+Grievance Text:
+{structured_grievance}
+
+Your task:
+- Analyze what is visible in the image
+- Decide whether the image VISUALLY SUPPORTS the grievance
+
+Rules:
+- If the image clearly shows the same issue described in the grievance → matches_grievance = true
+- If the image is unrelated or unclear → matches_grievance = false
+
+Respond ONLY in valid JSON:
+{{
+  "description": "what is visible in the image",
+  "issue": "problem detected in image",
+  "matches_grievance": true or false,
+  "severity": "low/medium/high",
+  "text_found": "any visible text or none",
+  "safety_concern": "yes/no with brief reason"
+}}
+"""
+                        },
+                        {
+                            "type": "image_url",
+                            "image_url": {
+                                "url": f"data:image/jpeg;base64,{base64_image}"
+                            }
+                        }
+                    ]
+                }
+            ],
+            temperature=0.2,
+            max_tokens=500
+        )
+
+        result_text = response.choices[0].message.content.strip()
+        result_text = clean_json_response(result_text)
+
+        try:
+            analysis = json.loads(result_text)
+        except Exception:
+            analysis = {
+                "description": result_text[:200],
+                "issue": "Unable to parse model response",
+                "matches_grievance": False,
+                "severity": "medium",
+                "text_found": "",
+                "safety_concern": "unknown"
+            }
+
+        return {
+            "success": True,
+            "analysis": analysis,
+            "method": "groq-vision"
+        }
+
+    except Exception as e:
+        print(f"Groq vision error: {e}")
+        return analyze_image_basic(image_path)
+
+
+def analyze_image_basic(image_path):
+    """
+    Fallback: Basic analysis without AI
+    Just confirms image is uploaded
+    """
+    try:
+        from PIL import Image
+        
+        img = Image.open(image_path)
+        width, height = img.size
+        format_name = img.format
+        
+        return {
+            "success": True,
+            "analysis": {
+                "description": "Visual evidence uploaded by user",
+                "issue": "Manual review required",
+                "severity": "medium",
+                "text_found": "N/A",
+                "safety_concern": "Requires visual inspection",
+                "image_info": {
+                    "width": width,
+                    "height": height,
+                    "format": format_name
+                }
+            },
+            "method": "basic-fallback"
+        }
+        
+    except Exception as e:
+        return {
+            "success": False,
+            "error": str(e),
+            "analysis": {
+                "description": "Image uploaded but analysis unavailable",
+                "issue": "Unknown",
+                "severity": "medium"
+            }
+        }
+
+
+# Test it
+if __name__ == "__main__":
+    import sys
+    
+    if len(sys.argv) > 1:
+        test_image = sys.argv[1]
+    else:
+        test_image = "test_image.jpg"
+    
     print("=" * 70)
+    print("TESTING GROQ VISION IMAGE ANALYSIS")
+    print("=" * 70)
+    
+    if os.path.exists(test_image):
+        print(f"\n📸 Analyzing: {test_image}")
+        result = analyze_image(test_image)
+        print(f"\nResult:")
+        print(json.dumps(result, indent=2))
+    else:
+        print(f"\n⚠️ Test image not found: {test_image}")
+        print("Usage: python ai_service.py <image_path>")
+    
+    print("\n" + "=" * 70)
