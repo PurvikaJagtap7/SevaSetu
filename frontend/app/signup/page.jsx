@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import Navbar from "../components/Navbar";
 
 export default function SignupPage() {
   const [form, setForm] = useState({
@@ -47,10 +48,8 @@ export default function SignupPage() {
     <div className="min-h-screen bg-gray-100 flex flex-col">
 
       
-      {/* Top Header */}
-      <div className="bg-white shadow py-4 text-center">
-        <h1 className="text-xl font-bold text-blue-900">Nyaya-Grievance</h1>
-      </div>
+      {/* Navbar */}
+      <Navbar/>
 
       <div className="flex items-center justify-center flex-1 px-4">
         <div className="bg-white w-full max-w-md border shadow-md p-6">

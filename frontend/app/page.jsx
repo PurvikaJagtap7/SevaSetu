@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Navbar from "./components/Navbar";
 
 export default function Home() {
   return (
@@ -15,38 +16,7 @@ export default function Home() {
   );
 }
 
-/* ---------- NAVBAR ---------- */
-
-function Navbar() {
-  return (
-    <div className="sticky top-0 bg-white shadow z-50">
-      <div className="flex justify-between items-center px-6 py-3 max-w-7xl mx-auto">
-
-        <h1 className="text-xl font-bold text-blue-900">
-          Nyaya-Grievance
-        </h1>
-
-        <div className="flex gap-8 text-sm font-medium items-center">
-          <Link href="/">Home</Link>
-          <Link href="/about">About</Link>
-
-          <Link href="/login?role=citizen">
-            <button className="bg-blue-900 text-white px-4 py-1.5 rounded text-sm">
-              Login
-            </button>
-          </Link>
-
-          <Link href="/signup">
-            <button className="border border-blue-900 text-blue-900 px-4 py-1.5 rounded text-sm">
-              Signup
-            </button>
-          </Link>
-        </div>
-
-      </div>
-    </div>
-  );
-}
+<Navbar />
 
 /* ---------- HERO ---------- */
 
@@ -55,7 +25,7 @@ function Hero() {
     <div className="bg-gradient-to-b from-blue-50 to-white text-center py-16 px-6">
 
       <h2 className="text-4xl font-bold text-blue-900 mb-4">
-        AI-Powered Grievance Resolution System
+        AI-Powered Grievance Reporting System
       </h2>
 
       <p className="text-gray-600 max-w-2xl mx-auto">

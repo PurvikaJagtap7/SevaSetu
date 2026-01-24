@@ -45,3 +45,8 @@ input, select {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* Hide Next.js dev badge */
+nextjs-portal {
+  display: none !important;
+}

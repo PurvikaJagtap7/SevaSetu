@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Navbar from "../components/Navbar";
 
 export default function TrackPage() {
   // Later from backend
@@ -75,26 +76,6 @@ export default function TrackPage() {
   );
 }
 
-/* ---------- NAVBAR ---------- */
-
-function Navbar() {
-  return (
-    <div className="bg-white shadow sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-6 py-3 flex justify-between items-center">
-
-        <h1 className="text-xl font-bold text-blue-900">Nyaya-Grievance</h1>
-
-        <div className="flex gap-6 text-sm font-medium items-center">
-          <Link href="/" className="text-blue-900">Home</Link>
-          <Link href="/about" className="text-blue-900">About</Link>
-          <Link href="/citizen" className="text-blue-900">Citizen dashboard</Link>
-          <Link href="/" className="text-red-600">Logout</Link>
-        </div>
-
-      </div>
-    </div>
-  );
-}
 
 /* ---------- FOOTER ---------- */
 
