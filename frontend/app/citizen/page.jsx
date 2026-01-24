@@ -1,12 +1,14 @@
 "use client";
 
 import Link from "next/link";
+import CitizenNavbar from "../components/CitizenNavbar";  
+import Footer from "../components/Footer";
 
 export default function CitizenHome() {
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col">
 
-      <Navbar />
+      <CitizenNavbar />
 
       <div className="flex flex-col items-center justify-center flex-1 px-6">
 
@@ -52,38 +54,3 @@ export default function CitizenHome() {
   );
 }
 
-/* ---------- NAVBAR ---------- */
-
-function Navbar() {
-  return (
-    <div className="bg-white shadow py-4 px-6 flex justify-between items-center">
-      <h1 className="text-xl font-bold text-blue-900">Nyaya-Grievance</h1>
-
-      <div className="flex gap-8 text-sm font-medium items-center text-blue-900">
-        <Link href="/" className="hover:underline">
-          Home
-        </Link>
-        <Link href="/about" className="hover:underline">
-          About
-        </Link>
-        <Link href="/profile" className="hover:underline">
-          Profile
-        </Link>
-        <Link href="/" className="hover:underline">
-          Logout
-        </Link>
-      </div>
-    </div>
-  );
-}
-
-
-/* ---------- FOOTER ---------- */
-
-function Footer() {
-  return (
-    <div className="text-center py-4 text-xs text-gray-500">
-      © 2026 Nyaya-Grievance Portal
-    </div>
-  );
-}

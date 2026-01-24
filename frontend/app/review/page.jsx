@@ -1,4 +1,5 @@
 "use client";
+import Navbar from "../components/Navbar";
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -26,10 +27,9 @@ export default function ReviewPage() {
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col">
 
-      {/* Header */}
-      <div className="bg-white shadow py-4 text-center">
-        <h1 className="text-xl font-bold text-blue-900">Nyaya-Grievance</h1>
-      </div>
+      {/* Navbar */}
+     
+     <Navbar/>
 
       <div className="flex justify-center px-4 mt-8 mb-12">
         <div className="bg-white w-full max-w-3xl border shadow-md p-8">

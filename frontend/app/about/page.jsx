@@ -1,15 +1,15 @@
 "use client";
 
 import Link from "next/link";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 export default function AboutPage() {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
 
-      {/* Header */}
-      <div className="bg-white shadow py-4 text-center">
-        <h1 className="text-xl font-bold text-blue-900">Nyaya-Grievance</h1>
-      </div>
+      {/*Navbar*/}
+      <Navbar/>
 
       <div className="max-w-5xl mx-auto px-6 py-12 flex-1">
 
@@ -56,9 +56,7 @@ export default function AboutPage() {
       </div>
 
       {/* Footer */}
-      <div className="bg-blue-900 text-white text-center py-3 text-xs">
-        © 2026 Nyaya-Grievance Portal
-      </div>
+      <Footer/>
     </div>
   );
 }
