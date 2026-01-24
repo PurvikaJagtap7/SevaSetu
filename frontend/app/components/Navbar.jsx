@@ -27,17 +27,17 @@ export default function Navbar() {
 
         {/* Logo + Name */}
         <Link href="/" className="flex items-center">
-  <div className="h-30 flex items-center">   {/* increase container */}
+  <div className="relative h-12 w-45"> 
     <Image
       src="/logo.jpeg"
       alt="Nyaya Grievance Logo"
-      width={260}
-      height={80}
-      className="h-15 w-auto object-contain"
+      fill
+      className="object-contain"
       priority
     />
   </div>
 </Link>
+
 
 
 

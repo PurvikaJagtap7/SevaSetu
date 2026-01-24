@@ -1,45 +1,59 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter, usePathname } from "next/navigation";
+import Image from "next/image";
+import { usePathname, useRouter } from "next/navigation";
 
 export default function AdminNavbar() {
-  const router = useRouter();
   const pathname = usePathname();
+  const router = useRouter();
 
   const navItem = (href, label) => (
     <Link
       href={href}
-      className={`px-3 py-1.5 rounded text-sm font-medium transition ${
-        pathname === href
-          ? "bg-blue-100 text-blue-900"
-          : "text-blue-900 hover:bg-blue-50"
-      }`}
+      className={`px-3 py-1.5 rounded text-sm font-medium transition
+        ${
+          pathname === href
+            ? "bg-blue-100 text-blue-900"
+            : "text-blue-900 hover:bg-blue-50"
+        }`}
     >
       {label}
     </Link>
   );
 
+  const handleLogout = () => {
+    router.push("/");
+  };
+
   return (
     <div className="sticky top-0 bg-white shadow z-50">
-      <div className="max-w-7xl mx-auto flex justify-between items-center px-6 py-3">
+      <div className="flex justify-between items-center px-6 h-16 max-w-7xl mx-auto">
 
-        {/* Logo */}
-        <Link href="/dashboard" className="text-lg font-bold text-blue-900">
-          Nyaya-Grievance (Admin)
+        {/* LOGO */}
+        <Link href="/" className="flex items-center">
+          <div className="relative h-12 w-44">
+            <Image
+              src="/logo.jpeg"
+              alt="Nyaya Grievance Logo"
+              fill
+              className="object-contain"
+              priority
+            />
+          </div>
         </Link>
 
-        {/* Links */}
+        {/* NAV ITEMS */}
         <div className="flex gap-6 items-center">
           {navItem("/dashboard", "Home")}
           {navItem("/about", "About")}
           {navItem("/admin/profile", "Profile")}
 
           <button
-            onClick={() => router.push("/")}
-            className="text-sm font-semibold text-red-600 hover:underline"
+            onClick={handleLogout}
+            className="text-sm font-medium text-red-600 hover:underline"
           >
-            Logout
+            Log Out
           </button>
         </div>
 

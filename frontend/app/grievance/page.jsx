@@ -30,20 +30,22 @@ export default function GrievancePage() {
   };
 
   const handleSubmit = () => {
-    if (!form.grievance || !form.city || !form.state) {
-      alert("Please fill required fields (City, State, and Grievance)");
-      return;
-    }
+  if (!form.grievance || !form.city || !form.state) {
+    alert("Please fill required fields (City, State, and Grievance)");
+    return;
+  }
 
-    const formWithAddress = {
-      ...form,
-      address: `${form.area ? form.area + ", " : ""}${form.place ? form.place + ", " : ""}${form.city}, ${form.state}`
-    };
-
-    sessionStorage.setItem("grievanceData", JSON.stringify(formWithAddress));
-    router.push("/review");
+  const formWithAddress = {
+    ...form,
+    address: `${form.area ? form.area + ", " : ""}${form.place ? form.place + ", " : ""}${form.city}, ${form.state}`,
+    imageName: form.image ? form.image.name : null   // 👈 only store name
   };
 
+  sessionStorage.setItem("grievanceData", JSON.stringify(formWithAddress));
+  router.push("/review");
+};
+
+  
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col">
 

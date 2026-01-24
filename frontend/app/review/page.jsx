@@ -10,18 +10,25 @@ export default function ReviewPage() {
   const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
-    const stored = localStorage.getItem("grievanceData");
+    const stored = sessionStorage.getItem("grievanceData");
     if (stored) {
       setData(JSON.parse(stored));
     }
   }, []);
 
-  if (!data) return null;
+  if (!data) {
+  return (
+    <div className="min-h-screen flex items-center justify-center">
+      <p className="text-blue-900 font-semibold">No grievance data found.</p>
+    </div>
+  );
+}
+
 
   const handleConfirm = () => {
     // Later → API call here
     setSubmitted(true);
-    localStorage.removeItem("grievanceData");
+     sessionStorage.removeItem("grievanceData"); 
   };
 
   return (
@@ -79,15 +86,14 @@ export default function ReviewPage() {
             {data.grievance}
           </Section>
 
-          {data.image && (
-            <Section title="Attached Image">
-              <img
-                src={URL.createObjectURL(data.image)}
-                alt="uploaded"
-                className="w-48 border mt-2"
-              />
-            </Section>
-          )}
+          {data.imageName && (
+          <Section title="Attached Image">
+            <p className="text-sm text-gray-700">
+              {data.imageName}
+            </p>
+          </Section>
+        )}
+
 
           {/* Buttons */}
           {!submitted && (

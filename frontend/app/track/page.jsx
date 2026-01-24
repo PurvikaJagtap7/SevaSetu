@@ -62,9 +62,11 @@ export default function TrackPage() {
                   {g.status}
                 </span>
 
+                <Link href={`/track/${g.id}`}>
                 <button className="border border-blue-900 text-blue-900 px-4 py-1 text-sm rounded">
                   View Details
                 </button>
+              </Link>
               </div>
             </div>
           ))}
