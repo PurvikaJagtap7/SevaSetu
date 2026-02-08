@@ -75,9 +75,12 @@ Pending → Under Review → In Process → On Hold → Resolved → Closed
 
 <img width="1366" height="682" alt="image" src="https://github.com/user-attachments/assets/3841911b-f105-405c-8843-8dabe3bab3be" />
 
-![WhatsApp Image 2026-02-09 at 01 15 08](https://github.com/user-attachments/assets/7849fefe-fe6f-4948-8aa5-832331c948b6)
+![WhatsApp Image 2026-02-09 at 01 16 41](https://github.com/user-attachments/assets/ffc1e22e-bc09-4ae6-868e-301d7a32598d)
+
+![WhatsApp Image 2026-02-09 at 01 17 23](https://github.com/user-attachments/assets/46b65ce4-4ca7-4708-a8af-dcdb9b00be52)
 
 
+![WhatsApp Image 2026-02-09 at 01 19 21](https://github.com/user-attachments/assets/0b8267cb-d6ec-4d09-ad8b-a0ad8e3c317e)
 
 <img width="1346" height="605" alt="image" src="https://github.com/user-attachments/assets/d4ea01dd-be9a-4e81-92a8-29ff3e367bb8" />
 
