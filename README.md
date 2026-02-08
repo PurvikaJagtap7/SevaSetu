@@ -1,262 +1,206 @@
-⚖️ Nyaya Grievance Portal — AI-Powered Public Grievance Redressal System
+# ⚖️ Nyaya Grievance Portal — AI-Powered Public Grievance Redressal System
 
 Nyaya Grievance Portal is an AI-powered, multi-channel grievance redressal platform that enables citizens to submit complaints easily and ensures automatic routing, priority detection, real-time tracking, and transparent resolution workflows.
 
-The system combines AI processing, WhatsApp integration, analytics dashboards, and department-based administration to make government grievance handling more accessible, efficient, and transparent.
+The system combines AI processing, WhatsApp integration, analytics dashboards, and department-based administration to make grievance handling more accessible, efficient, and transparent.
 
-🚀 Key Highlights
+---
 
-🤖 AI-powered grievance processing
+# 🚀 Features
 
-🏢 Automatic routing to correct department
+- 🤖 AI-powered grievance processing
+- 🏢 Automatic department routing
+- 🎯 AI-based priority assignment
+- 📝 Text structuring of informal complaints
+- 🖼 Image verification using AI vision models
+- 📱 Dual submission channels — Web + WhatsApp
+- 🔔 Real-time WhatsApp notifications
+- 📊 Admin analytics dashboards
+- 🧾 Complete audit trail
+- 🔐 Secure authentication
+- ⚡ Fast processing (2–5 seconds per grievance)
 
-📱 Dual submission channels — Web + WhatsApp
+---
 
-🔔 Real-time WhatsApp notifications
+# 🧠 AI Intelligent Processing
 
-📊 Admin analytics dashboards
+The portal uses **Groq AI (LLaMA models)** to automatically process grievances with four AI functions:
 
-🧾 Complete audit trail & status tracking
+1. Text Structuring — Converts raw complaints into professional reports  
+2. Department Classification — Routes to correct department  
+3. Priority Detection — Assigns High / Medium / Low priority  
+4. Image Analysis — Validates uploaded images with complaint context  
 
-⚡ 2–5 second AI processing time
+### Example
 
-🔐 Secure & scalable architecture
+User input:
+> “Water leaking on MG Road for 3 days”
 
-🧠 AI-Powered Intelligent Processing
+System output:
+- Structured report generated
+- Routed to Water Supply Department
+- Priority set to High
 
-The portal uses Groq AI (LLaMA models) to automatically process every grievance using 4 AI functions:
+No manual classification required.
 
-✅ AI Capabilities
+---
 
-Text Structuring — Converts informal complaints into structured professional reports
+# 📱 Multi-Channel Submission
 
-Department Classification — Routes to 1 of 10 departments automatically
+## 🌐 Web Portal
+- Complaint form
+- Image upload
+- Structured submission
+- Tracking dashboard
 
-Priority Assignment — Assigns High / Medium / Low priority
+## 💬 WhatsApp
+- Submit via message
+- Optional image upload
+- Instant confirmation
+- Status updates via WhatsApp
 
-Image Analysis — Validates uploaded images against complaint context
+No app download required — improves accessibility.
 
-📌 Example
+---
 
-User writes: “Water leaking on my street for 3 days”
-→ AI structures report
-→ Routes to Water Supply Department
-→ Assigns High Priority
+# 🎯 Status Workflow
 
-No manual sorting required.
-
-📱 Multi-Channel Submission
-
-Citizens can submit grievances through:
-
-🌐 Web Portal
-
-Full complaint form
-
-Image upload
-
-Structured submission
-
-Tracking dashboard
-
-💬 WhatsApp Integration
-
-Submit complaint via message
-
-Optional image upload
-
-Instant confirmation reply
-
-Status updates via WhatsApp
-
-✅ No app download required
-✅ Works on basic smartphones
-✅ Improves accessibility
-
-🎯 Real-Time Status Tracking
-
-Every grievance passes through defined workflow stages:
-
+Each grievance moves through defined stages:
 Pending → Under Review → In Process → On Hold → Resolved → Closed
 
-📌 Transparency Features
 
-Status timeline view
+### Transparency Includes
 
-Admin name recorded
+- Status timeline
+- Admin name recorded
+- Timestamp logging
+- Admin notes
+- Previous → new status tracking
+- WhatsApp alerts on updates
 
-Timestamp logged
+---
 
-Admin notes stored
+# 🏢 Supported Departments
 
-Previous → New status tracked
+- Public Health
+- Water Supply & Sanitation
+- Electricity
+- Roads & Infrastructure
+- Municipal Corporation
+- Police
+- Education
+- Transport
+- Housing & Urban Development
+- Environment & Forest
 
-WhatsApp alerts on every update
+Each department has its own admin dashboard and filtered grievance view.
 
-🏢 Department-Based Admin System
+---
 
-Supports 10 Government Departments:
+# 📊 Admin Analytics
 
-Public Health
+Real-time dashboards include:
 
-Water Supply & Sanitation
+- Priority distribution (pie chart)
+- Department comparison (bar chart)
+- Daily grievance trends (7-day line chart)
 
-Electricity
+Metrics shown:
+- Total grievances
+- Resolved cases
+- Pending cases
+- Status breakdown
+- Department performance
 
-Roads & Infrastructure
+---
 
-Municipal Corporation
+# ⚙️ Workflow Automation
 
-Police
+Automated pipeline:
 
-Education
+1. Citizen submits complaint
+2. AI processes text & image
+3. Department auto-selected
+4. Priority auto-assigned
+5. WhatsApp confirmation sent
+6. Admin updates status
+7. User notified instantly
+8. Audit trail stored
 
-Transport
+### Processing Time
 
-Housing & Urban Development
+| System | Time |
+|---------|--------|
+Traditional | 15–20 min |
+Nyaya Portal | **2–5 sec** |
 
-Environment & Forest
+---
 
-👨‍💼 Admin Capabilities
+# 🎨 UI Features
 
-Department-specific dashboard
+- Clean, simple interface
+- Responsive design
+- Color-coded status badges
+- Real-time updates
+- Accessibility-friendly language
 
-View only relevant grievances
+Status Colors:
 
-Update status
+- Pending — Gray
+- Under Review — Yellow
+- In Process — Blue
+- On Hold — Orange
+- Resolved — Green
+- Closed — Dark Gray
 
-Add notes
+---
 
-View history timeline
+# 🏗 Tech Stack
 
-Filter & search cases
+## Frontend
+- Next.js 16
+- React 19
 
-📊 Analytics & Reporting
+## Backend
+- Flask (Python)
 
-Admins get real-time visual analytics:
+## Database
+- SQLite
 
-📈 Charts Included
+## AI
+- Groq API
+- LLaMA models
+- Vision models
 
-Priority Distribution (Pie)
+## Messaging
+- Twilio WhatsApp API
 
-Department Comparison (Bar)
+---
 
-Daily Trends — Last 7 Days (Line)
+# 🔐 Security
 
-📌 Metrics
+- Password hashing (bcrypt)
+- Parameterized SQL queries
+- SQL injection protection
+- Input validation
+- Secure API endpoints
+- CORS configured
 
-Total grievances
+---
 
-Resolved count
+# 📈 Performance & Scalability
 
-Pending count
+- Handles 1000+ grievances
+- Optimized queries
+- <500ms average API response
+- Modular architecture
+- Production-ready design
 
-Status breakdown
+---
 
-Department performance
 
-Enables data-driven decision making.
 
-⚙️ Complete Workflow Automation
-🔄 Automated Pipeline
+# 📄 License
 
-Submission received
+This project is for academic / demonstration use. Add your preferred license if deploying publicly.
 
-AI processes complaint
-
-Department auto-selected
-
-Priority auto-assigned
-
-WhatsApp confirmation sent
-
-Admin updates status
-
-User notified automatically
-
-Audit trail stored
-
-⏱ Processing Time Comparison
-System	Time per Grievance
-Traditional	15–20 minutes
-Nyaya Portal	2–5 seconds
-🎨 User Interface Features
-
-Color-coded status badges
-
-Clean & simple UI
-
-Responsive design (mobile/tablet/desktop)
-
-Real-time updates
-
-Accessibility-friendly language
-
-🎨 Status Colors
-
-Pending — Gray
-
-Under Review — Yellow
-
-In Process — Blue
-
-On Hold — Orange
-
-Resolved — Green
-
-Closed — Dark Gray
-
-🔐 Security & Architecture
-🏗 Tech Stack
-
-Frontend
-
-Next.js 16
-
-React 19
-
-Backend
-
-Flask (Python)
-
-Database
-
-SQLite with migrations
-
-AI
-
-Groq API
-
-LLaMA 3.1
-
-LLaMA Vision models
-
-Messaging
-
-Twilio WhatsApp API
-
-🔒 Security Features
-
-Password hashing (bcrypt)
-
-Parameterized SQL queries
-
-SQL injection protection
-
-Input validation (frontend + backend)
-
-CORS configured
-
-Secure API endpoints
-
-📈 Scalability & Performance
-
-Handles 1000+ grievances
-
-Optimized DB queries
-
-<500ms average API response
-
-Modular architecture
-
-Easily deployable
