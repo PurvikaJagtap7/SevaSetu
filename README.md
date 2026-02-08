@@ -68,17 +68,16 @@ No app download required — improves accessibility.
 Each grievance moves through defined stages:
 Pending → Under Review → In Process → On Hold → Resolved → Closed
 
-![WhatsApp Image 2026-02-09 at 01 15 34](https://github.com/user-attachments/assets/aaf63c3c-1b7f-48fb-bd28-588e22dc3bb6)
+![WhatsApp Image 2026-02-09 at 01 15 34](https://github.com/user-attachments/assets/140d4483-35c4-4dad-8da5-12b3102fd9f9)
 
-![WhatsApp Image 2026-02-09 at 01 10 16](https://github.com/user-attachments/assets/32931fdb-d630-42ba-9d26-5827dcb94aca)
+<img width="1366" height="592" alt="image" src="https://github.com/user-attachments/assets/3fdd0946-944c-4834-88c9-4d117d58f66a" />
+
 
 <img width="1366" height="682" alt="image" src="https://github.com/user-attachments/assets/3841911b-f105-405c-8843-8dabe3bab3be" />
 
 ![WhatsApp Image 2026-02-09 at 01 15 08](https://github.com/user-attachments/assets/7849fefe-fe6f-4948-8aa5-832331c948b6)
 
-<img width="1324" height="705" alt="image" src="https://github.com/user-attachments/assets/1792659b-27e3-43cb-b018-d5949d5081c7" />
 
-<img width="1324" height="705" alt="image" src="https://github.com/user-attachments/assets/7c062560-c594-40c5-8963-43e296a0611b" />
 
 <img width="1346" height="605" alt="image" src="https://github.com/user-attachments/assets/d4ea01dd-be9a-4e81-92a8-29ff3e367bb8" />
 
