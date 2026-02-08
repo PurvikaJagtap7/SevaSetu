@@ -2,10 +2,13 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Navbar from "../components/Navbar";
 
 export default function LoginPage() {
+  const router = useRouter();
   const [role, setRole] = useState("citizen");
+  const [loading, setLoading] = useState(false);
 
   const [form, setForm] = useState({
     username: "",
@@ -29,9 +32,45 @@ export default function LoginPage() {
     return Object.keys(err).length === 0;
   };
 
-  const handleLogin = () => {
-    if (validate()) {
-      alert(`${role.toUpperCase()} Login Validated (later → API call)`);
+  const handleLogin = async () => {
+    if (!validate()) return;
+    
+    setLoading(true);
+    
+    try {
+      const response = await fetch("http://localhost:5000/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: form.username,
+          password: form.password,
+          type: role === "admin" ? "admin" : "user"
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.status === "success") {
+        // Store user data in sessionStorage
+        sessionStorage.setItem("user", JSON.stringify(result.user));
+        sessionStorage.setItem("userType", result.type);
+        
+        // Route based on user type
+        if (result.type === "admin") {
+          router.push("/dashboard");
+        } else {
+          router.push("/citizen");
+        }
+      } else {
+        alert(result.message || "Login failed");
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      alert("Failed to connect to server. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -102,9 +141,10 @@ export default function LoginPage() {
           {/* Login Button */}
           <button
             onClick={handleLogin}
-            className="w-full bg-blue-900 text-white py-2 text-sm font-semibold mt-2"
+            disabled={loading}
+            className="w-full bg-blue-900 text-white py-2 text-sm font-semibold mt-2 disabled:bg-gray-400 disabled:cursor-not-allowed"
           >
-            LOGIN
+            {loading ? "Logging in..." : "LOGIN"}
           </button>
 
           {/* Signup only for citizen */}

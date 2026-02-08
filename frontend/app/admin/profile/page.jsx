@@ -7,16 +7,62 @@ import Footer from "../../components/Footer";
 
 export default function AdminProfilePage() {
   const [admin, setAdmin] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Later this will work directly when backend is ready
-    axios.get("/api/admin/profile")
-      .then((res) => setAdmin(res.data))
-      .catch(() => {
-        // Temporary empty state (no hardcoding)
-        setAdmin({});
-      });
+    fetchAdminProfile();
   }, []);
+
+  const fetchAdminProfile = async () => {
+    try {
+      // Get admin info from sessionStorage
+      const userData = sessionStorage.getItem("user");
+      if (!userData) {
+        setError("Not logged in");
+        setLoading(false);
+        return;
+      }
+
+      const user = JSON.parse(userData);
+      const adminId = user.id;
+
+      const response = await axios.get(`http://localhost:5000/api/admin/profile/${adminId}`);
+      
+      if (response.data.status === "success") {
+        setAdmin(response.data.profile);
+      } else {
+        setError("Failed to load profile");
+      }
+    } catch (err) {
+      console.error("Error fetching profile:", err);
+      setError("Failed to connect to server. Please ensure backend is running.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+        <p className="text-blue-900 font-semibold">Loading...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-100 flex flex-col">
+        <AdminNavbar />
+        <div className="flex items-center justify-center flex-1">
+          <div className="bg-red-50 border border-red-200 p-6 rounded">
+            <p className="text-red-600 font-semibold">⚠️ {error}</p>
+          </div>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
 
   if (!admin) return null;
 
@@ -41,6 +87,14 @@ export default function AdminProfilePage() {
             <ProfileItem
               label="Total Grievances Handled"
               value={admin.totalHandled}
+            />
+            <ProfileItem
+              label="Resolved Grievances"
+              value={admin.resolved}
+            />
+            <ProfileItem
+              label="Pending Grievances"
+              value={admin.pending}
             />
 
           </div>

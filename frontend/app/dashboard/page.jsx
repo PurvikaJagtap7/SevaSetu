@@ -1,172 +1,202 @@
 "use client";
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import AdminNavbar from "../components/AdminNavbar";
+import Footer from "../components/Footer";
+import {
+  PieChart, Pie, Cell, Tooltip,
+  BarChart, Bar, XAxis, YAxis,
+  LineChart, Line
+} from "recharts";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+export default function DashboardPage() {
+  const [dashboardData, setDashboardData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-export default function GrievancePage() {
-  const router = useRouter();
+  useEffect(() => {
+    fetchDashboardData();
+  }, []);
 
-  const [form, setForm] = useState({
-    category: "",
-    city: "",
-    state: "",
-    place: "",
-    area: "",
-    urgency: "",
-    grievance: "",
-    image: null,
-  });
+  const fetchDashboardData = async () => {
+    try {
+      // Get admin info from sessionStorage
+      const userData = sessionStorage.getItem("user");
+      if (!userData) {
+        setError("Not logged in");
+        setLoading(false);
+        return;
+      }
 
-  const handleChange = (e) => {
-    const { name, value, files } = e.target;
+      const user = JSON.parse(userData);
+      const adminId = user.id;
 
-    if (name === "image") {
-      setForm({ ...form, image: files[0] });
-    } else {
-      setForm({ ...form, [name]: value });
+      const response = await fetch(`http://localhost:5000/api/dashboard/stats/${adminId}`);
+      const result = await response.json();
+      
+      if (result.status === "success") {
+        setDashboardData(result.stats);
+      } else {
+        setError("Failed to load dashboard data");
+      }
+    } catch (err) {
+      console.error("Error fetching dashboard:", err);
+      setError("Failed to connect to server. Please ensure backend is running.");
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleSubmit = () => {
-    if (!form.grievance || !form.city || !form.state) {
-      alert("Please fill required fields (City, State, and Grievance)");
-      return;
-    }
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+        <p className="text-blue-900 font-semibold">Loading dashboard...</p>
+      </div>
+    );
+  }
 
-    // Combine location data
-    const formWithAddress = {
-      ...form,
-      address: `${form.area ? form.area + ", " : ""}${form.place ? form.place + ", " : ""}${form.city}, ${form.state}`
-    };
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-100 flex flex-col">
+        <AdminNavbar />
+        <div className="flex items-center justify-center flex-1">
+          <div className="bg-red-50 border border-red-200 p-6 rounded">
+            <p className="text-red-600 font-semibold">⚠️ {error}</p>
+          </div>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
 
-    // Store form data for review page
-    sessionStorage.setItem("grievanceData", JSON.stringify(formWithAddress));
-
-    router.push("/review");
-  };
-
+  const priorityData = dashboardData?.priorityData || [];
+  const deptData = dashboardData?.deptData || [];
+  const trendData = dashboardData?.trendData || [];
+  const grievances = dashboardData?.grievances || [];
+  const department = dashboardData?.department || "All Departments";
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col">
-      {/* Header */}
-      <div className="bg-blue-900 text-white py-4 text-center text-lg font-semibold">
-        Submit New Grievance
-      </div>
 
-      <div className="flex justify-center px-4 mt-8 mb-10">
-        <div className="bg-white w-full max-w-3xl border shadow-md p-8">
-          <h2 className="text-2xl font-bold text-blue-900 mb-6 border-b pb-2">
-            Grievance Details
-          </h2>
+      <AdminNavbar />
 
-          {/* Location Fields */}
-          <div className="mb-6">
-            <h3 className="text-sm font-semibold mb-3 text-gray-700">
-              Location of Issue *
-            </h3>
-            
-            <div className="grid grid-cols-2 gap-4 mb-3">
-              <div>
-                <label className="block text-sm font-medium mb-1">City *</label>
-                <input
-                  name="city"
-                  onChange={handleChange}
-                  placeholder="e.g., Mumbai"
-                  className="w-full border p-3 text-sm"
+      <div className="max-w-7xl mx-auto px-6 py-8 flex-1">
+
+        <h1 className="text-2xl font-bold text-blue-900 mb-6">
+          Admin Dashboard - {department}
+        </h1>
+
+        {/* Charts */}
+        <div className="grid md:grid-cols-3 gap-6 mb-10">
+
+          <ChartCard title="Priority Distribution">
+            {priorityData.length > 0 ? (
+              <PieChart width={220} height={220}>
+                <Pie data={priorityData} dataKey="value" outerRadius={80} label>
+                  <Cell fill="#dc2626" />
+                  <Cell fill="#eab308" />
+                  <Cell fill="#16a34a" />
+                </Pie>
+                <Tooltip />
+              </PieChart>
+            ) : (
+              <p className="text-gray-500 text-sm py-8">No data available</p>
+            )}
+          </ChartCard>
+
+          <ChartCard title="By Department">
+            {deptData.length > 0 ? (
+              <BarChart width={260} height={220} data={deptData}>
+                <XAxis dataKey="dept" stroke="#1e3a8a" />
+                <YAxis stroke="#1e3a8a" />
+                <Tooltip />
+                <Bar dataKey="count" fill="#3b82f6" radius={[6,6,0,0]} />
+              </BarChart>
+            ) : (
+              <p className="text-gray-500 text-sm py-8">No data available</p>
+            )}
+          </ChartCard>
+
+          <ChartCard title="Daily Trend (Last 7 Days)">
+            {trendData.length > 0 ? (
+              <LineChart width={260} height={220} data={trendData}>
+                <XAxis dataKey="day" stroke="#1e3a8a" />
+                <YAxis stroke="#1e3a8a" />
+                <Tooltip />
+                <Line
+                  type="monotone"
+                  dataKey="count"
+                  stroke="#1e3a8a"
+                  strokeWidth={3}
+                  dot={{ r: 5 }}
                 />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium mb-1">State *</label>
-                <input
-                  name="state"
-                  onChange={handleChange}
-                  placeholder="e.g., Maharashtra"
-                  className="w-full border p-3 text-sm"
-                />
-              </div>
-            </div>
+              </LineChart>
+            ) : (
+              <p className="text-gray-500 text-sm py-8">No data available</p>
+            )}
+          </ChartCard>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium mb-1">Place / Locality</label>
-                <input
-                  name="place"
-                  onChange={handleChange}
-                  placeholder="e.g., Andheri West"
-                  className="w-full border p-3 text-sm"
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium mb-1">Area / Street</label>
-                <input
-                  name="area"
-                  onChange={handleChange}
-                  placeholder="e.g., SV Road, near Metro"
-                  className="w-full border p-3 text-sm"
-                />
-              </div>
-            </div>
-
-            <p className="text-xs text-gray-500 mt-2">
-              Helps authorities locate the issue quickly.
-            </p>
-          </div>
-
-          {/* Image Upload */}
-          <label className="block text-sm font-semibold mb-2">
-            Upload Photo
-          </label>
-
-          <label className="flex flex-col items-center justify-center w-full h-36 border-2 border-dashed border-blue-300 cursor-pointer bg-blue-50 hover:bg-blue-100 mb-6">
-            <div className="text-center">
-              <p className="text-3xl mb-2">📷</p>
-              <p className="text-sm text-gray-700 font-medium">
-                Click to upload or drag and drop image
-              </p>
-              <p className="text-xs text-gray-500">PNG, JPG up to 5MB</p>
-            </div>
-            <input
-              type="file"
-              name="image"
-              accept="image/*"
-              onChange={handleChange}
-              className="hidden"
-            />
-          </label>
-
-          {form.image && (
-            <p className="text-sm text-green-600 mb-4">
-              ✓ {form.image.name} selected
-            </p>
-          )}
-
-          {/* Grievance Text */}
-          <label className="block text-sm font-semibold mb-1">
-            Describe Your Grievance *
-          </label>
-
-          <textarea
-            rows="7"
-            name="grievance"
-            onChange={handleChange}
-            placeholder="Explain your issue in simple language..."
-            className="w-full border p-4 text-sm resize-none mb-6 text-black placeholder-gray-400"
-          />
-
-          <button
-            onClick={handleSubmit}
-            className="w-full bg-blue-900 text-white py-3 text-sm font-semibold hover:bg-blue-800 transition-colors"
-          >
-            Process Grievance
-          </button>
         </div>
+
+        {/* Grievance Cards */}
+        <h2 className="text-lg font-semibold text-blue-900 mb-4">
+          Recent Grievance Records
+        </h2>
+
+        {grievances.length === 0 ? (
+          <div className="bg-white shadow border p-8 rounded text-center">
+            <p className="text-gray-500">No grievances found for your department</p>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {grievances.map((g, i) => (
+              <div key={i} className="bg-white shadow border p-5 rounded flex justify-between items-center">
+
+                <div>
+                  <p className="font-bold text-blue-900 text-sm">{g.id}</p>
+                  <p className="text-sm text-gray-700">{g.user} • {g.dept}</p>
+                  <p className="text-xs text-gray-500">Submitted on {g.date}</p>
+                </div>
+
+                <div className="flex items-center gap-6">
+
+                  <span className={`px-3 py-1 text-white text-xs rounded
+                    ${g.priority === "High" ? "bg-red-600" :
+                      g.priority === "Medium" ? "bg-yellow-500" :
+                      "bg-green-600"}`}>
+                    {g.priority}
+                  </span>
+
+                  <span className={`px-3 py-1 text-white text-xs rounded
+                    ${g.status === "Resolved" ? "bg-green-600" : 
+                     g.status === "In Process" ? "bg-blue-600" :
+                     g.status === "Under Review" ? "bg-yellow-500" :
+                     "bg-gray-600"}`}>
+                    {g.status}
+                  </span>
+
+                  <Link href={`/admin/grievance/${g.id}`}>
+                    <button className="text-blue-900 font-semibold underline">
+                      View
+                    </button>
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
       </div>
 
-      {/* Footer */}
-      <div className="bg-blue-900 text-white text-center py-3 text-xs">
-        © 2026 Nyaya-Grievance Portal
-      </div>
+      <Footer />
+    </div>
+  );
+}
+
+function ChartCard({ title, children }) {
+  return (
+    <div className="bg-white shadow rounded p-4 text-center">
+      <p className="font-semibold text-blue-900 mb-3">{title}</p>
+      {children}
     </div>
   );
 }

@@ -148,22 +148,22 @@ def classify_department(informal_text, structured_text=None):
     prompt = f"""
 Based on the grievance below, classify the responsible government department.
 
-Available Departments:
-- Health
-- Infrastructure
-- Electricity
-- Water Supply
-- Sanitation
-- Transport
-- Police
-- Municipal Services
-- Education
-- Other
+Available Departments (respond with EXACT name):
+- Public Health Department
+- Water Supply & Sanitation Department
+- Electricity Department
+- Roads & Infrastructure Department
+- Municipal Corporation
+- Police Department
+- Education Department
+- Transport Department
+- Housing & Urban Development
+- Environment & Forest Department
 
 Grievance:
 {context}
 
-Respond with ONLY the department name, nothing else. No explanation, no formatting.
+IMPORTANT: Respond with ONLY the EXACT department name from the list above. No explanation, no formatting, no variations.
 """
 
     result = generate_content(prompt, response_format="text")
@@ -171,7 +171,57 @@ Respond with ONLY the department name, nothing else. No explanation, no formatti
     # Extra cleaning: remove any quotes or extra text
     result = result.strip('"\'').strip()
     
-    return result
+    # Map common variations to exact department names
+    department_mapping = {
+        "health": "Public Health Department",
+        "public health": "Public Health Department",
+        "water": "Water Supply & Sanitation Department",
+        "water supply": "Water Supply & Sanitation Department",
+        "sanitation": "Water Supply & Sanitation Department",
+        "electricity": "Electricity Department",
+        "power": "Electricity Department",
+        "infrastructure": "Roads & Infrastructure Department",
+        "roads": "Roads & Infrastructure Department",
+        "road": "Roads & Infrastructure Department",
+        "municipal": "Municipal Corporation",
+        "municipality": "Municipal Corporation",
+        "police": "Police Department",
+        "education": "Education Department",
+        "school": "Education Department",
+        "transport": "Transport Department",
+        "traffic": "Transport Department",
+        "housing": "Housing & Urban Development",
+        "environment": "Environment & Forest Department",
+        "forest": "Environment & Forest Department"
+    }
+    
+    # Check if result matches any mapping (case insensitive)
+    result_lower = result.lower()
+    for key, value in department_mapping.items():
+        if key in result_lower:
+            return value
+    
+    # If no mapping found, try to find closest match from exact list
+    exact_departments = [
+        "Public Health Department",
+        "Water Supply & Sanitation Department",
+        "Electricity Department",
+        "Roads & Infrastructure Department",
+        "Municipal Corporation",
+        "Police Department",
+        "Education Department",
+        "Transport Department",
+        "Housing & Urban Development",
+        "Environment & Forest Department"
+    ]
+    
+    # Check if result contains any exact department name
+    for dept in exact_departments:
+        if dept.lower() in result_lower or result_lower in dept.lower():
+            return dept
+    
+    # Default fallback
+    return "Municipal Corporation"
 
 
 # -----------------------------

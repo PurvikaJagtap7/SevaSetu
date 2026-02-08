@@ -126,6 +126,15 @@ def init_db():
             VALUES (?, ?)
         """, (dept, f"Handles {dept} related grievances"))
     
+    # Migrate existing database - add resolution_note if missing
+    try:
+        cursor.execute("SELECT resolution_note FROM grievances LIMIT 1")
+    except sqlite3.OperationalError:
+        print("⚠️ Adding resolution_note column to existing database...")
+        cursor.execute("ALTER TABLE grievances ADD COLUMN resolution_note TEXT")
+        conn.commit()
+        print("✅ Migration complete: resolution_note column added")
+    
     conn.commit()
     conn.close()
     print("✅ Database initialized successfully")
@@ -359,6 +368,14 @@ def update_grievance_status(grievance_id, status, note=None, updated_by=None, up
     """Update grievance status and add to history"""
     conn = get_db()
     cursor = conn.cursor()
+    
+    # Ensure resolution_note column exists
+    try:
+        cursor.execute("SELECT resolution_note FROM grievances LIMIT 1")
+    except sqlite3.OperationalError:
+        print("⚠️ Adding resolution_note column...")
+        cursor.execute("ALTER TABLE grievances ADD COLUMN resolution_note TEXT")
+        conn.commit()
     
     # Get current status
     cursor.execute("SELECT status FROM grievances WHERE grievance_id = ?", (grievance_id,))
@@ -647,12 +664,6 @@ def seed_sample_data():
             "email": "amit@example.com",
             "phone": "+919876543212",
             "password": "password123"
-        },
-        {
-            "name": "Susmita Sahu",
-            "email": "sushmitasahu2710@gmail.com",
-            "phone": "+919136025140",
-            "password": "susmita@123"
         }
     ]
     
